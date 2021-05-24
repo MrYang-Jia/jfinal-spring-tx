@@ -39,13 +39,14 @@ public class SpringDbPro extends DbPro {
     }
 
     /**
+     * 扩展实现兼容spring事务
      * Execute transaction.
      * @param config the Config object
      * @param transactionLevel the transaction level
      * @param atom the atom operation
      * @return true if transaction executing succeed otherwise false
      */
-    public boolean tx(Config config, int transactionLevel, IAtom atom) {
+    protected boolean tx(Config config, int transactionLevel, IAtom atom) {
         //System.out.println("打开改造的spring事务");
         Connection conn = config.getThreadLocalConnection();
         if (conn != null) {	// Nested transaction support
