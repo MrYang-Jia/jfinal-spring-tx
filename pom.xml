@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.edbplus</groupId>
+    <artifactId>jfinal-spring-tx</artifactId>
+    <!-- 每次deploy后必须调整版本号 , RELEASE -->
+    <version>1.0-SNAPSHOT</version>
+
+    <name>jfinal-spring-tx</name>
+    <description>This is a spring version of the transaction plug-in</description>
+    <url>https://github.com/MrYang-Jia/jfinal-spring-tx.git</url>
+
+
+    <properties>
+        <jfinal.activerecord>4.9.11</jfinal.activerecord>
+        <java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <spring-tx.version>5.1.2.RELEASE</spring-tx.version>
+        <!-- 公司内部独立修正版，有部分语句获取会有异常，调整了源码内容 -->
+        <druid.version>1.1.21_1</druid.version>
+    </properties>
+
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <tag>master</tag>
+        <url>git@github.com/MrYang-Jia/edb.git</url>
+        <connection>scm:git:git@github.com/MrYang-Jia/edb.git</connection>
+        <developerConnection>scm:git:git@github.com/MrYang-Jia/edb.git</developerConnection>
+    </scm>
+
+    <developers>
+        <developer>
+            <name>MrYang-Jia</name>
+            <email>yzj114477@qq.com</email>
+            <organization>MrYang-Jia</organization>
+        </developer>
+    </developers>
+
+    <distributionManagement>
+        <snapshotRepository>
+            <id>sonatype-nexus-snapshots</id>
+            <!--<name>Sonatype Nexus Snapshots</name>-->
+            <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>sonatype-nexus-staging</id>
+            <!--<name>Nexus Release Repository</name>-->
+            <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
+
+
+
+
+
+    <dependencies>
+
+        <dependency>
+            <groupId>com.jfinal</groupId>
+            <artifactId>activerecord</artifactId>
+            <version>${jfinal.activerecord}</version>
+        </dependency>
+
+
+
+        <!-- 支持在 spring 之中整合使用 jfinal的事务 -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-tx</artifactId>
+            <version>${spring-tx.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+
+        <!-- 支持在 spring 之中整合使用 jfinal,通过jdbc现成的事务管理工具操作事务 -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+            <version>${spring-tx.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <!--<scope>test</scope>-->
+            <scope>provided</scope>
+        </dependency>
+
+
+        <!-- === 必须依赖的jar包 end === -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>${druid.version}</version>
+            <!-- 依赖时可选 -->
+            <optional>true</optional>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.17</version>
+            <!-- 依赖时可选 -->
+            <optional>true</optional>
+            <scope>provided</scope>
+        </dependency>
+
+    </dependencies>
+
+
+    <build>
+
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <!-- **/* 打包代码生成器的模板文件 -->
+                    <include>**/*.tp</include>
+                </includes>
+                <filtering>false</filtering>
+            </resource>
+
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+                <excludes>
+                    <exclude>
+                        *.properties
+                    </exclude>
+                    <exclude>
+                        *.sql
+                    </exclude>
+                </excludes>
+            </resource>
+        </resources>
+
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <!-- 打包时提出test指令 -->
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.6.1</version>
+                <configuration>
+                    <!-- <compilerArgument>-parameters</compilerArgument> -->
+                    <source>1.8</source>
+                    <target>1.8</target>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+
+            <!-- Javadoc -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.10.4</version>
+                <configuration>
+                    <windowtitle>jfinal-spring-tx</windowtitle>
+                    <doctitle>jfinal-spring-tx</doctitle>
+                    <destDir>jfinal-spring-tx</destDir>
+                    <show>private</show>
+                    <detectLinks>false</detectLinks>
+                    <detectOfflineLinks>true</detectOfflineLinks>
+                    <linksource>true</linksource>
+                    <additionalparam>-Xdoclint:none</additionalparam>
+                    <detectJavaApiLink>true</detectJavaApiLink>
+                    <source>8</source>
+                    <!-- 生成api文档 mvn javadoc:javadoc -->
+                    <!--<reportOutputDirectory>../javadocs</reportOutputDirectory>-->
+                    <reportOutputDirectory>javadocs</reportOutputDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- 安装源码到本地仓库 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.1.2</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- gpg签名 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+
+        </plugins>
+    </build>
+
+</project>
