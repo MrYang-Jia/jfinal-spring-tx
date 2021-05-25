@@ -7,7 +7,7 @@
     <groupId>com.edbplus</groupId>
     <artifactId>jfinal-spring-tx</artifactId>
     <!-- 每次deploy后必须调整版本号 , RELEASE -->
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
 
     <name>jfinal-spring-tx</name>
     <description>This is a spring version of the transaction plug-in</description>
@@ -32,12 +32,12 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
-
+    <!--https://github.com/MrYang-Jia/jfinal-spring-tx.git-->
     <scm>
         <tag>master</tag>
-        <url>git@github.com/MrYang-Jia/edb.git</url>
-        <connection>scm:git:git@github.com/MrYang-Jia/edb.git</connection>
-        <developerConnection>scm:git:git@github.com/MrYang-Jia/edb.git</developerConnection>
+        <url>git@github.com/MrYang-Jia/jfinal-spring-tx.git</url>
+        <connection>scm:git:git@github.com/MrYang-Jia/jfinal-spring-tx.git</connection>
+        <developerConnection>scm:git:git@github.com/MrYang-Jia/jfinal-spring-tx.git</developerConnection>
     </scm>
 
     <developers>
@@ -62,7 +62,13 @@
     </distributionManagement>
 
 
-
+    <!--<pluginRepositories>-->
+    <!--<pluginRepository>-->
+    <!--<id>maven2</id>-->
+    <!--<name>maven镜像仓库</name>-->
+    <!--<url>https://repo1.maven.org/maven2/</url>-->
+    <!--</pluginRepository>-->
+    <!--</pluginRepositories>-->
 
 
     <dependencies>
@@ -70,7 +76,8 @@
         <dependency>
             <groupId>com.jfinal</groupId>
             <artifactId>activerecord</artifactId>
-            <version>${jfinal.activerecord}</version>
+            <!-- 必须大于等于4.9.11 版本，否则无效 -->
+            <version>[4.9.11,)</version>
         </dependency>
 
 
