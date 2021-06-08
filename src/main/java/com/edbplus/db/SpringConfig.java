@@ -17,6 +17,8 @@ package com.edbplus.db;
 
 import com.jfinal.kit.LogKit;
 import com.jfinal.plugin.activerecord.*;
+import com.jfinal.plugin.activerecord.cache.ICache;
+import com.jfinal.plugin.activerecord.dialect.Dialect;
 import org.springframework.jdbc.datasource.ConnectionHolder;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
@@ -36,12 +38,32 @@ import java.sql.Statement;
  **/
 public class SpringConfig extends Config {
 
-
-
     // 适配方法-jfinal版本必须大于等于 4.9.11 ,否则无法适配改造
+    /**
+     * 数据源对象配置类 -- 主要适配spring数据源管理的切入实现
+     * @param name
+     * @param dataSource
+     * @param transactionLevel
+     */
     public SpringConfig(String name, DataSource dataSource, int transactionLevel) {
         super(name,dataSource,transactionLevel);
     }
+
+    /**
+     * 适配config ，只有该方法可以切换除了 mysql 之外的其他容器 -- 非必要 ,jfinal-arp对象可改其他无法变更的对象参数
+     * @param name
+     * @param dataSource
+     * @param dialect
+     * @param showSql
+     * @param devMode
+     * @param transactionLevel
+     * @param containerFactory
+     * @param cache
+     */
+    public SpringConfig(String name, DataSource dataSource, Dialect dialect, boolean showSql, boolean devMode, int transactionLevel, IContainerFactory containerFactory, ICache cache) {
+        super(name,dataSource,dialect,showSql,devMode,transactionLevel,containerFactory,cache);
+    }
+
 
 
 
