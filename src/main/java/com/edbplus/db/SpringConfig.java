@@ -76,7 +76,7 @@ public class SpringConfig extends Config {
 
 //        System.out.println("Spring适配改造获取连接对象 getConnection()");
         Connection conn = null;
-        ConnectionHolder conHolder = conHolder = (ConnectionHolder) TransactionSynchronizationManager.getResource(this.getDataSource());
+        ConnectionHolder conHolder = (ConnectionHolder) TransactionSynchronizationManager.getResource(this.getDataSource());
 
         // 不是spring的事务管理，则走原来的逻辑
         if(conHolder == null ){
