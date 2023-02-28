@@ -77,7 +77,6 @@ public class SpringConfig extends Config {
 //        System.out.println("Spring适配改造获取连接对象 getConnection()");
         Connection conn = null;
         ConnectionHolder conHolder = (ConnectionHolder) TransactionSynchronizationManager.getResource(this.getDataSource());
-
         // 不是spring的事务管理，则走原来的逻辑
         if(conHolder == null ){
             conn = (Connection)this.getThreadLocalConnection();
@@ -87,14 +86,8 @@ public class SpringConfig extends Config {
                 return this.isShowSql() ? (new SqlReporter(this.getDataSource().getConnection())).getConnection() : this.getDataSource().getConnection();
             }
         }else{
-            // 获取当前线程的连接
-            conn = (Connection)this.getThreadLocalConnection();
-            if (conn != null) {
-                return conn;
-            } else {
-                // 通过spring获取连接对象
-                conn = DataSourceUtils.getConnection(this.getDataSource());
-            }
+            // 通过spring获取连接对象 -- 统一交由spring管理，避免混乱(在多数据源的情况下，交由spring管理)
+            conn = DataSourceUtils.getConnection(this.getDataSource());
         }
         return  conn;
     }
@@ -104,11 +97,6 @@ public class SpringConfig extends Config {
      * @return
      */
     public Connection getThreadLocalConnection() {
-        Connection connection =  super.getThreadLocalConnection();
-        // 如果当前线程有连接对象，则获取当前线程的连接对象
-        if(connection != null){
-            return connection;
-        }
         // 如果是spring事务，则返回spring的事务对象，否则直接取 jfinal 当前线程的事务对象
         ConnectionHolder conHolder = (ConnectionHolder) TransactionSynchronizationManager.getResource(this.getDataSource());
         if(conHolder == null){
